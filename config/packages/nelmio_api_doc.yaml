@@ -1,0 +1,57 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Book
+            description: Api Livre!
+            version: 1.0.0
+
+        servers:
+            - url: http://localhost:8000
+              description: Local API
+
+        paths:
+            /api/login_check:
+                post:
+                    summary: Permet d'obtenir le token JWT pour se logger.
+                    requestBody:
+                        description: Crée un nouveau token JWT
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/Credentials'
+                    responses:
+                        '200':
+                            description: Récupère le token JWT
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Token'
+
+        components:
+            schemas:
+                Credentials:
+                    type: object
+                    properties:
+                        username:
+                            type: string
+                            default: dfdfd@gmail.com
+                        password:
+                            type: string
+                            default: password
+                Token:
+                    type: object
+                    properties:
+                        token:
+                            type: string
+            securitySchemes:
+                bearerAuth:
+                    type: apiKey
+                    in: header
+                    name: Authorization
+
+        security:
+            - Bearer: []
+
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
